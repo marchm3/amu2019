@@ -1,10 +1,16 @@
 package com.example.demo.models;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 public class AuthorDTO {
+
+    @NotEmpty(message = "Please provide a fullname")
     String fullname;
+
+    @NotEmpty(message = "Please provide a popularity")
     String popularity;
+
     List<String> books;
 
     public AuthorDTO(String fullname, String popularity, List<String> books) {

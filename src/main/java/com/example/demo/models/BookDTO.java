@@ -1,13 +1,20 @@
 package com.example.demo.models;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.List;
 
-public class Book {
+public class BookDTO {
+    @NotEmpty(message = "Please provide a title")
     String title;
-    String category;
-    List<Author> authors;
 
-    public Book(String title, String category, List<Author> authors) {
+    @NotEmpty(message = "Please provide a category")
+    String category;
+
+    @Size(min=1)
+    List<String> authors;
+
+    public BookDTO(String title, String category, List<String> authors) {
         this.title = title;
         this.category = category;
         this.authors = authors;
@@ -29,7 +36,11 @@ public class Book {
         this.category = category;
     }
 
-    public List<Author> getAuthors() {
+    public List<String> getAuthors() {
         return authors;
+    }
+
+    public void setAuthors(List<String> authors) {
+        this.authors = authors;
     }
 }
