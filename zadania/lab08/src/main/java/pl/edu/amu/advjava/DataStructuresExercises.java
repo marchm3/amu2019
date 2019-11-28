@@ -1,11 +1,7 @@
 package pl.edu.amu.advjava;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Stream;
 
 /*
     ZADANIE: zmodyfikuj kod, stosując programowanie funkcyjne tam, gdzie to możliwe
@@ -18,6 +14,11 @@ final class DataStructuresExercises {
         if(words == null || fileName == null) {
             throw new IllegalArgumentException();
         }
+        Stream.concat(
+                wordsIndex.entrySet().stream(),
+                words.stream()
+        )
+
         for(String word : words) {
             if(!wordsIndex.containsKey(word)){
                 wordsIndex.put(word, new HashSet<>());
@@ -27,10 +28,9 @@ final class DataStructuresExercises {
     }
 
     Set<String> getMatchingFiles(String word) {
-        if(word != null && wordsIndex.containsKey(word)) {
-            return new HashSet<>(wordsIndex.get(word));
-        }
-        return new HashSet<>();
+        return Optional.ofNullable(word)
+                .map(w -> wordsIndex.get(w))
+                .orElse(new HashSet<String>());
     }
 
     void indexAll(Map<String, Set<String>> otherIndex) {
