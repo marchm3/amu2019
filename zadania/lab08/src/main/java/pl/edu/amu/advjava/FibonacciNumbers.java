@@ -17,9 +17,6 @@ final class FibonacciNumbersExercise {
      *   ZADANIE: dopasuj implementację wyrażenia lambda tak, żeby generowało kolejne liczby ciągu Fibonacciego.
      */
     static int[] generateFibonacciNumbersWithLambda(int n) {
-        int currentNumber = 1;
-        int nextNumber = 1;
-
         return IntStream.generate(() -> {
             // TODO add implementation here
             throw new UnsupportedOperationException("Not yet implemented");

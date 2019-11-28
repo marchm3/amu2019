@@ -14,17 +14,7 @@ final class DataStructuresExercises {
         if(words == null || fileName == null) {
             throw new IllegalArgumentException();
         }
-        Stream.concat(
-                wordsIndex.entrySet().stream(),
-                words.stream()
-        )
-
-        for(String word : words) {
-            if(!wordsIndex.containsKey(word)){
-                wordsIndex.put(word, new HashSet<>());
-            }
-            wordsIndex.get(word).add(fileName);
-        }
+        words.stream().forEach(word -> indexSingleWord(word, new HashSet(Arrays.asList(fileName) )));
     }
 
     Set<String> getMatchingFiles(String word) {
@@ -34,29 +24,20 @@ final class DataStructuresExercises {
     }
 
     void indexAll(Map<String, Set<String>> otherIndex) {
+        otherIndex.forEach(this::indexSingleWord);
+    }
 
-        for(Map.Entry<String, Set<String>> entry : otherIndex.entrySet()) {
-            String word = entry.getKey();
-            if(!wordsIndex.containsKey(word)){
-                wordsIndex.put(word, new HashSet<>());
-            }
-            wordsIndex.get(word).addAll(entry.getValue());
-        }
+    private void indexSingleWord(String word, Set<String> filenames) {
+        wordsIndex.merge(word, filenames, (v1, v2) -> {
+            v1.addAll(v2);
+            return v1;
+        });
     }
 
     void fileDeleted(String fileName) {
-
-        Set<Map.Entry<String, Set<String>>> mapEntries = wordsIndex.entrySet();
-        Iterator<Map.Entry<String, Set<String>>> entriesIterator = mapEntries.iterator();
-        while(entriesIterator.hasNext()) {
-            Map.Entry<String, Set<String>> entry = entriesIterator.next();
-
-            entry.getValue().remove(fileName);
-            if(entry.getValue().isEmpty()){
-                entriesIterator.remove();
-            }
-        }
-
+        wordsIndex.forEach((word, filenames) -> {
+            filenames.remove(fileName);
+        });
+        wordsIndex.values().removeIf(Set::isEmpty);
     }
-
 }
